@@ -1,0 +1,37 @@
+spring:
+    application:
+        name: "configserver"
+    profiles:
+        active: native
+    cloud:
+        config:
+            server:
+                native:
+                  search-locations: "classpath:/config"
+    health:
+      rabbitmq:
+        enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+
+# If encryption is needed, please use a key in the following yml block with a desired key
+# Wherever encrypted value is needed and code needs to decrypt it, the following format needs to be used {cipher}<encrypted value>
+# encrypt:
+#  key: ""
+
+server:
+  port: 8071

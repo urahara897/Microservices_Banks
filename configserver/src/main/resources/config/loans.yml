@@ -1,0 +1,10 @@
+build:
+  version: "3.0"
+loans:
+  message: "Welcome to Banking Loans Application"
+  contact details:
+    name: "John Doe"
+    email: "johndoe@example.com"
+  onCallSupport:
+    - 123-456-7890
+    - 987-654-3210

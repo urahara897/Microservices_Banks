@@ -1,0 +1,10 @@
+build:
+  version: "1.0"
+cards:
+  message: "Welcome to Banking Cards Application Production"
+  contact_details:
+    name: "John Fowler - QA Lead"
+    email: "johnfowler@example.com"
+  onCallSupport:
+    - 987-654-7890
+    - 123-456-3210

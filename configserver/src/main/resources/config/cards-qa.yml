@@ -1,0 +1,10 @@
+build:
+  version: "2.0"
+cards:
+  message: "Welcome to Banking Cards Application QA"
+  contact details:
+    name: "John Bass - QA Lead"
+    email: "johnbass@example.com"
+  onCallSupport:
+    - 987-456-7890
+    - 123-654-3210

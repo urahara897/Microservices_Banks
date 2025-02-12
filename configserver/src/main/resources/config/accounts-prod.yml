@@ -1,0 +1,10 @@
+build:
+  version: "1.0"
+accounts:
+  message: "Welcome to Banking Accounts Application Production"
+  contact details:
+    name: "John Fowler - QA Lead"
+    email: "johnfowler@example.com"
+  onCallSupport:
+    - 987-654-7890
+    - 123-456-3210
