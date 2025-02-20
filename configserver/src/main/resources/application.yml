@@ -8,9 +8,6 @@ spring:
             server:
                 native:
                   search-locations: "classpath:/config"
-    health:
-      rabbitmq:
-        enabled: false
 
 management:
   endpoints:
