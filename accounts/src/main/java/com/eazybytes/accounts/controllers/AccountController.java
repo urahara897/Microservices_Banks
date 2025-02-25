@@ -6,6 +6,8 @@ import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.IAccountsService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class AccountController {
     private final IAccountsService iAccountsService;
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     public AccountController(IAccountsService iAccountsService) {
         this.iAccountsService = iAccountsService;
@@ -170,11 +175,20 @@ public class AccountController {
                     )
             )
     })
+    @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo(){
+        logger.debug("getBuildInfo() method invoked");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(buildVersion);
+    }
+
+    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable){
+        logger.debug("getBuildInfoFallback() method invoked");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("0.9"); //chose a random value
     }
 
     @Operation(
@@ -194,10 +208,19 @@ public class AccountController {
                     )
             )
     })
+    @RateLimiter(name = "getContactInfo", fallbackMethod = "getContactInfoFallback")
     @GetMapping("/contact-info")
     public ResponseEntity<AccountsContactInfoDto> getContactInfo(){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountsContactInfoDto);
+    }
+
+    public ResponseEntity<AccountsContactInfoDto> getContactInfoFallback(Throwable throwable){
+        AccountsContactInfoDto contactInfoDto = new AccountsContactInfoDto();
+        contactInfoDto.setMessage("Too Many Requests. Try again in sometime");
+        return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(contactInfoDto);
     }
 }
