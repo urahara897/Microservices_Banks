@@ -37,14 +37,19 @@ management:
     health:
       probes:
         enabled: true
-
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 endpoints:
   shutdown:
     enabled: true
+  web:
+    exposure:
+      include: "prometheus, health"
 
 eureka:
   instance:
