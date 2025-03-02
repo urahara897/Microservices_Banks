@@ -18,6 +18,17 @@ management:
     health:
       probes:
         enabled: true
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
   metrics:
     tags:
       application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

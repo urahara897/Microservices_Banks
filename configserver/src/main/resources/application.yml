@@ -1,13 +1,13 @@
 spring:
-    application:
-        name: "configserver"
-    profiles:
-        active: native
-    cloud:
-        config:
-            server:
-                native:
-                  search-locations: "classpath:/config"
+  application:
+    name: "configserver"
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "classpath:/config"
 
 management:
   endpoints:
@@ -23,15 +23,25 @@ management:
     health:
       probes:
         enabled: true
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
   metrics:
     tags:
       application: ${spring.application.name}
-
+    export:
+      prometheus:
+        enabled: true
 
 # If encryption is needed, please use a key in the following yml block with a desired key
 # Wherever encrypted value is needed and code needs to decrypt it, the following format needs to be used {cipher}<encrypted value>
 # encrypt:
 #  key: ""
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 server:
   port: 8071

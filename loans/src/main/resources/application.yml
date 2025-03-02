@@ -33,12 +33,19 @@ management:
     health:
       probes:
         enabled: true
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
   info:
     env:
       enabled: true
   metrics:
     tags:
       application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
 
 endpoints:
   shutdown:
@@ -64,3 +71,22 @@ logging:
     com:
       eazybytes:
         loans: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+resilience4j.retry:
+  configs:
+    default:
+      maxRetryAttempts: 3
+      waitDuration: 100
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - java.lang.NullPointerException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitForPeriod: 1
+      limitRefreshPeriod: 1000
