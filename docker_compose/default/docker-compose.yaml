@@ -1,4 +1,24 @@
 services:
+  rabbit:
+    image: rabbitmq:3.12-management
+    user: 0:0
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - microservicesbanks
+
   keyclock:
     image: quay.io/keycloak/keycloak:26.0.7
     container_name: keycloak
@@ -356,6 +376,8 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
+      rabbit:
+        condition: service_healthy
     deploy:
       resources:
         limits:
@@ -378,6 +400,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
       - OTEL_TRACES_SAMPLER=parentbased_always_on
+      - SPRING_RABBITMQ_HOST=rabbit
 
   loans:
     build:
@@ -508,6 +531,7 @@ services:
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
       - OTEL_TRACES_SAMPLER=parentbased_always_on
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://keycloak:8080/realms/master/protocol/openid-connect/certs
+
   eurekaserver:
     build:
       context: ../../configserver
@@ -545,9 +569,6 @@ services:
       - OTEL_TRACES_SAMPLER=parentbased_always_on
 
   configserver:
-    build:
-      context: ../../configserver
-      dockerfile: Dockerfile
     image: "rudro77/configserver:0.0.1-SNAPSHOT"
     container_name: configserver-ms
     ports:
@@ -573,6 +594,17 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
       - OTEL_TRACES_SAMPLER=parentbased_always_on
+
+  message:
+    image: "rudro77/message:0.0.1-SNAPSHOT"
+    container_name: message-ms
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbit
+    networks:
+      - microservicesbanks
 
 volumes:
   prometheus_data:

@@ -1,4 +1,24 @@
 services:
+  rabbit:
+    image: rabbitmq:3.12-management
+    user: 0:0
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - microservicesbanks
+
   keyclock:
     image: quay.io/keycloak/keycloak:26.0.7
     container_name: keycloak
@@ -369,6 +389,7 @@ services:
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
       - OTEL_TRACES_SAMPLER=parentbased_always_on
       - JAVA_TOOL_OPTIONS=-javaagent:/app/libs/opentelemetry-javaagent-1.27.0.jar
+      - SPRING_RABBITMQ_HOST=rabbit
 
   loans:
     build:
@@ -568,6 +589,17 @@ services:
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
       - OTEL_TRACES_SAMPLER=parentbased_always_on
       - JAVA_TOOL_OPTIONS=-javaagent:/app/libs/opentelemetry-javaagent-1.27.0.jar
+
+  message:
+    image: "rudro77/message:0.0.1-SNAPSHOT"
+    container_name: message-ms
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbit
+    networks:
+      - microservicesbanks
 
 volumes:
   prometheus_data:
