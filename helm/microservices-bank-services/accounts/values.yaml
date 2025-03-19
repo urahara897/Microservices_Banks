@@ -26,3 +26,14 @@ eureka_enabled: true
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: true
+
+# Add database configuration
+database:
+  enabled: true
+  name: accountsdb
+  dbname: accountsdb
+  username: root
+  password: root
+  port: 3306
+  storage: 1Gi
+  url: jdbc:mysql://accountsdb:3306/accountsdb

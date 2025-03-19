@@ -26,3 +26,14 @@ eureka_enabled: true
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
+
+# Add database configuration
+database:
+  enabled: true
+  name: loansdb
+  dbname: loansdb
+  username: root
+  password: root
+  port: 3306
+  storage: 1Gi
+  url: jdbc:mysql://loansdb:3306/loansdb

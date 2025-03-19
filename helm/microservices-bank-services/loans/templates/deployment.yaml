@@ -1,1 +1,11 @@
 {{- template "common.deployment" . -}}
+{{- define "loans.deployment-additions" -}}
+{{- if .Values.database.enabled }}
+        - name: SPRING_DATASOURCE_USERNAME
+          value: {{ .Values.database.username }}
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: {{ .Values.database.password }}
+        - name: SPRING_DATASOURCE_URL
+          value: {{ .Values.database.url }}
+{{- end }}
+{{- end }}

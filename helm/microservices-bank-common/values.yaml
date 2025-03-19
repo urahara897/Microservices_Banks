@@ -1,0 +1,6 @@
+# Default database configuration
+database:
+  enabled: false
+  username: ""
+  password: ""
+  url: ""
