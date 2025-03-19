@@ -1,0 +1,27 @@
+dependencies:
+- name: microservices-bank-common
+  repository: file://../../microservices-bank-common
+  version: 0.1.0
+- name: configserver
+  repository: file://../../microservices-bank-services/configserver
+  version: 0.1.0
+- name: eurekaserver
+  repository: file://../../microservices-bank-services/eurekaserver
+  version: 0.1.0
+- name: accounts
+  repository: file://../../microservices-bank-services/accounts
+  version: 0.1.0
+- name: cards
+  repository: file://../../microservices-bank-services/cards
+  version: 0.1.0
+- name: loans
+  repository: file://../../microservices-bank-services/loans
+  version: 0.1.0
+- name: gatewayserver
+  repository: file://../../microservices-bank-services/gatewayserver
+  version: 0.1.0
+- name: message
+  repository: file://../../microservices-bank-services/message
+  version: 0.1.0
+digest: sha256:09362b372cd0e9ae58d010edb75475148f172f6ab75123ba7d809d693dd11d10
+generated: "2025-03-19T21:17:20.281928+05:30"

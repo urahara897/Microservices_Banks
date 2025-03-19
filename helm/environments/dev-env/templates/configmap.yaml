@@ -1,0 +1,2 @@
+# yamllint disable
+{{- template "common.configmap" . -}}

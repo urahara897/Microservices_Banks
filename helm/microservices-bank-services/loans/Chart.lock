@@ -1,0 +1,6 @@
+dependencies:
+- name: microservices-bank-common
+  repository: file://../../microservices-bank-common
+  version: 0.1.0
+digest: sha256:c5e8e4488506a066df94b438698c1fb446ce5f104890bca8aab857ee6fd66081
+generated: "2025-03-18T21:00:34.0046682+05:30"
