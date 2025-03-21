@@ -47,6 +47,14 @@ spec:
               name: {{ .Values.global.configMapName }}
               key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         {{- end }}
+        {{- if and .Values.database (eq (.Values.database.enabled | default false) true) }}
+        - name: SPRING_DATASOURCE_USERNAME
+          value: {{ .Values.database.username }}
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: {{ .Values.database.password }}
+        - name: SPRING_DATASOURCE_URL
+          value: {{ .Values.database.url }}
+        {{- end }}
         {{- if .Values.resouceserver_enabled }}
         - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
           valueFrom: 
@@ -55,35 +63,17 @@ spec:
               key: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
         {{- end }}
         {{- if .Values.otel_enabled }}
-        - name: JAVA_TOOL_OPTIONS
-          valueFrom: 
-            configMapKeyRef:
-              name: {{ .Values.global.configMapName }}
-              key: JAVA_TOOL_OPTIONS
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          valueFrom: 
-            configMapKeyRef:
-              name: {{ .Values.global.configMapName }}
-              key: OTEL_EXPORTER_OTLP_ENDPOINT
-        - name: OTEL_METRICS_EXPORTER
-          valueFrom: 
-            configMapKeyRef:
-              name: {{ .Values.global.configMapName }}
-              key: OTEL_METRICS_EXPORTER
-        - name: OTEL_LOGS_EXPORTER
-          valueFrom:
-            configMapKeyRef:
-              name: {{ .Values.global.configMapName }}
-              key: OTEL_LOGS_EXPORTER
         - name: OTEL_SERVICE_NAME
           value: {{ .Values.appName }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://tempo:4318
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: http/protobuf
+        - name: OTEL_TRACES_SAMPLER
+          value: parentbased_always_on
         {{- end }}
         {{- if .Values.kafka_enabled }}
         - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-          valueFrom: 
-            configMapKeyRef:
-              name: {{ .Values.global.configMapName }}
-              key: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+          value: kafka:9092
         {{- end }}
-        
-{{- end -}}
+{{- end }}

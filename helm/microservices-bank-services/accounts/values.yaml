@@ -1,6 +1,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Add global configuration
+global:
+  configMapName: microservices-config
+
 deploymentName: accounts-deployment
 serviceName: accounts
 appLabel: accounts
@@ -19,6 +23,7 @@ service:
   port: 8080
   targetPort: 8080
 
+# Enable required features
 appname_enabled: true
 profile_enabled: true
 config_enabled: true
@@ -37,3 +42,13 @@ database:
   port: 3306
   storage: 1Gi
   url: jdbc:mysql://accountsdb:3306/accountsdb
+  volumeName: mysql-data
+
+# Remove or disable any other mysql configurations
+mysql:
+  enabled: false
+
+# Ensure we're using the common database
+common:
+  database:
+    enabled: true

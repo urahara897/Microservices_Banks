@@ -1,6 +1,20 @@
+# Default values for common components
+initContainer:
+  enabled: false
+  image: ""
+
 # Default database configuration
 database:
   enabled: false
   username: ""
   password: ""
   url: ""
+
+# Default application configuration
+appname_enabled: false
+profile_enabled: false
+config_enabled: false
+eureka_enabled: false
+resouceserver_enabled: false
+otel_enabled: false
+kafka_enabled: false

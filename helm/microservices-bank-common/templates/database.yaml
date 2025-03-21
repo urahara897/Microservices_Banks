@@ -1,5 +1,4 @@
 {{- define "common.database" -}}
-{{- if .Values.database.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -16,7 +15,7 @@ spec:
         app: {{ .Values.database.name }}
     spec:
       containers:
-      - name: mysql
+      - name: {{ .Values.database.name }}
         image: mysql:8.0
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -25,28 +24,29 @@ spec:
           value: {{ .Values.database.dbname }}
         ports:
         - containerPort: {{ .Values.database.port }}
+          name: mysql
         volumeMounts:
-        - name: mysql-data
+        - name: {{ .Values.database.name }}-persistent-storage
           mountPath: /var/lib/mysql
   volumeClaimTemplates:
   - metadata:
-      name: mysql-data
+      name: {{ .Values.database.name }}-persistent-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{ .Values.database.storage | default "1Gi" }}
+          storage: {{ .Values.database.storage }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.database.name }}
 spec:
-  selector:
-    app: {{ .Values.database.name }}
   ports:
   - port: {{ .Values.database.port }}
-    targetPort: {{ .Values.database.port }}
+    targetPort: mysql
+    name: mysql
   clusterIP: None
-{{- end }}
-{{- end }} 
+  selector:
+    app: {{ .Values.database.name }}
+{{- end -}} 

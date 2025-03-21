@@ -24,34 +24,34 @@ version: 0.1.0
 appVersion: "1.0.0"
 
 dependencies:
-  - name: microservices-bank-common
-    version: 0.1.0
-    repository: file://../../microservices-bank-common
+- name: microservices-bank-common
+  version: 0.1.0
+  repository: file://../../microservices-bank-common
 
-  - name: configserver
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/configserver
+- name: configserver
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/configserver
 
-  - name: eurekaserver
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/eurekaserver
+- name: eurekaserver
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/eurekaserver
 
-  - name: accounts
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/accounts
+- name: accounts
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/accounts
 
-  - name: cards
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/cards
+- name: cards
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/cards
 
-  - name: loans
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/loans
+- name: loans
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/loans
 
-  - name: gatewayserver
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/gatewayserver
+- name: gatewayserver
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/gatewayserver
 
-  - name: message
-    version: 0.1.0
-    repository: file://../../microservices-bank-services/message
+- name: message
+  version: 0.1.0
+  repository: file://../../microservices-bank-services/message
